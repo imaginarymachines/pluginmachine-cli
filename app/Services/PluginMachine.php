@@ -17,9 +17,7 @@ class PluginMachine {
 		$this->api = $api;
 	}
 
-
-
-	public function featureCode( string $feature, array $data,$buildId = '' ){
+	public function featureCode( string $feature, array $data,int $buildId ){
 		$files = $this->api->featureCode($feature,$data,$buildId);
 		if( ! $files ){
 			//?
@@ -27,7 +25,6 @@ class PluginMachine {
 		}
 		foreach ($files as $path => $contents) {
 			Storage::put($path, $contents);
-
 		}
 		return true;
 	}

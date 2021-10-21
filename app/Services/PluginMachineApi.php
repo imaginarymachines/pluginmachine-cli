@@ -19,15 +19,45 @@ class PluginMachineApi {
 		return sprintf( '%s/%s', $this->apiUrl, $enpoint );
 	}
 
-	public function featureCode( string $feature, array $data,$buildId = '' ){
+	public function featureCode( string $feature, array $data,$buildId, $pluginId ){
 		$r = $this->getClientWithToken()
 			->post( $this->requestUrl(
+				//This is wrong.
 				sprintf('/code/%s',$feature)
 		)	,$data);
 		if($r->successful()){
 			return (array)$r->json();
 		}
-		return false
+		return false;
+	}
+
+	public function getBuildCode($pluginId, $buildId){
+		///plugins
+		$r = $this->getClientWithToken()
+			->post( $this->requestUrl( "/plugins/{$pluginId}/builds/{$buildId}/code" ) );
+		dd($r);
+	}
+
+	public function getFeatureCode($pluginId, $buildId, $featureId){
+		///plugins
+		$r = $this->getClientWithToken()
+			->get(
+				$this->requestUrl( "/plugins/{$pluginId}/builds/{$buildId}/features/{$featureId}/code" ));
+		dd($r);
+	}
+
+	public function addFeature($pluginId, $buildId, array $data){
+		///plugins
+		$r = $this->getClientWithToken()
+			->post( $this->requestUrl( "/plugins/{$pluginId}/builds/{$buildId}/features" ),$data );
+		dd($r);
+	}
+
+	public function addPlugin(array $data){
+		///plugins
+		$r = $this->getClientWithToken()
+			->post( $this->requestUrl( "/plugins/",$data );
+		dd($r);
 	}
 
 	protected function getClientWithToken():PendingRequest{

@@ -38,6 +38,14 @@ class Features {
 		return $options;
 	}
 
+	public function getFeatureBy(string $search, string $by,bool $withPluginHooks = false ) : \stdClass {
+		return collect($this->getFeatures($withPluginHooks))
+			->find(function($feature)use($by,$search){
+				return $feature->$by == $search;
+			});
+			throw new \Exception('Not found');
+	}
+
 
 	public function getFeatures( bool $withPluginHooks = false ): array{
 		if( ! $withPluginHooks){

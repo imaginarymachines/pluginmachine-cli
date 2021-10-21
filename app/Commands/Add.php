@@ -29,12 +29,13 @@ class Add extends Command
      */
     public function handle(Features $features)
     {
-        $name = $this->choice(
+        $featureLabel = $this->choice(
 			'What do you want to add to this plugin?',
 			$features->getFeatureOptions('flat.label'),
 			3
 		);
-		dd($name);
+		$feature = $features->getFeatureBy($featureLabel,'label');
+		
     }
 
     /**
