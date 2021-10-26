@@ -10,21 +10,21 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
-class Add extends Command
+class GetPlugins extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'add';
+    protected $signature = 'plugins:all';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Add feature to plugin';
+    protected $description = 'List all plugins';
 
     /**
      * Execute the console command.
@@ -34,32 +34,8 @@ class Add extends Command
     public function handle(Features $features,PluginMachineApi $api)
     {
 
-        $featureLabel = $this->choice(
-			'What do you want to add to this plugin?',
-			$features->getFeatureOptions('flat.label'),
-			3
-		);
-		$feature = $features->getFeatureBy($featureLabel,'singular');
-		$rules = $features->getRules($feature->type);
-		$data = [];
-		foreach ($rules as $key => $field) {
-			$label = isset($field->label)&&! empty($field->label) ? $field->label : $key;
-
-			if( isset($field->options) ){
-				$options = (array)$field->options;
-				$data[$key] = $this->choice(
-					$label,
-					$options,
-					Arr::first($options)
-				);
-			}else{
-				$data[$key] = $this->ask($label);
-			}
-
-		}
-
-
-		dd($data);
+		$plugins = $api->getPlugins();
+		dd($plugins);
 
     }
 
