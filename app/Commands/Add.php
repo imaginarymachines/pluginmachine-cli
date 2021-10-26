@@ -31,10 +31,6 @@ class Add extends Command
      */
     public function handle(Features $features)
     {
-		$array = [100, 200, 300];
-
-
-
         $featureLabel = $this->choice(
 			'What do you want to add to this plugin?',
 			$features->getFeatureOptions('flat.label'),
