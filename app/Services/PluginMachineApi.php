@@ -32,17 +32,7 @@ class PluginMachineApi {
 		});
 	}
 
-	public function featureCode( string $feature, array $data,$buildId, $pluginId ){
-		$r = $this->getClientWithToken()
-			->post( $this->requestUrl(
-				//This is wrong.
-				sprintf('/code/%s',$feature)
-		)	,$data);
-		if($r->successful()){
-			return (array)$r->json();
-		}
-		return false;
-	}
+
 
 	public function getBuildCode($pluginId, $buildId){
 		///plugins
@@ -56,7 +46,7 @@ class PluginMachineApi {
 		$r = $this->getClientWithToken()
 			->get(
 				$this->requestUrl( "plugins/{$pluginId}/builds/{$buildId}/features/{$featureId}/code" ));
-		return $r->body();
+		return ! empty($r->json()) ? $r->json() : json_decode($r->body());
 	}
 
 	public function addFeature($pluginId, $buildId, array $data){

@@ -12,13 +12,19 @@ class PluginMachine {
 	 * @var PluginMachineApi
 	 */
 	protected $api;
-	protected $apiUrl;
-	public function __construct(PluginMachineApi $api){
+	protected $plugin;
+	public function __construct(PluginMachineApi $api, PluginMachinePlugin $plugin){
 		$this->api = $api;
+		$this->plugin = $plugin;
 	}
 
-	public function featureCode( string $feature, array $data,int $buildId ){
-		$files = $this->api->featureCode($feature,$data,$buildId);
+	public function addFeature( string $feature, array $data ){
+		$featureId = $this->api->addFeature( $feature,$this->plugin->buildId, $data );
+		$files = $this->api->getFeatureCode(
+			$this->plugin->buildId,
+			$this->plugin->buildId,
+			$featureId
+		);
 		if( ! $files ){
 			//?
 			return false;

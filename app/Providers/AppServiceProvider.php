@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\PluginMachineApi;
+use App\Services\PluginMachinePlugin;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,11 +17,20 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind( PluginMachineApi::class, function(){
 			return new PluginMachineApi(
-				config('services.plugin_machine.url','http://localhost'),
-				config('services.plugin_machine.key','f9945846646f60fa3a4f554377d33020aa7b455df98a129865d9ac32c364d41c')
+				config('plugin_machine.api.url'),
+				config('plugin_machine.api.key')
 			);
 
 		});
+		$this->app->singleton(PluginMachinePlugin::class, function (){
+			return new PluginMachinePlugin(
+				config('plugin_machine.plugin.pluginId'),
+				config('plugin_machine.plugin.buildId'),
+				config('plugin_machine.plugin.writeDir'),
+
+			);
+
+		})
     }
 
     /**

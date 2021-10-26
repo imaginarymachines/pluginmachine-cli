@@ -8,26 +8,17 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 class PluginMachinePlugin {
 
-	public $slug;
+	public $writeDir;
 	public $pluginId;
 	public $currentBuildId;
 	protected $api;
 
-	public function __construct( \stdClass $configData,PluginMachine $api ){
-		$this->slug = $configData->slug;
-		$this->pluginId = $configData->pluginId;
-		$this->currentBuildId = $configData->currentBuildId;
-		$this->api = $api;
-
+	public function __construct( int $pluginId, int $currentBuildId, string $writeDir) {
+		$this->pluginId = $pluginId;
+		$this->currentBuildId = $currentBuildId;
+		$this->writeDir = $writeDir;
 	}
 
-	public function newVersion(){
-
-	}
-
-	public function newFeature(string $feature, array $args){
-		$this->api->featureCode($feature, $args, $this->currentBuildId);
-	}
 
 
 }
