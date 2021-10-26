@@ -11,11 +11,10 @@ class PluginMachinePlugin {
 	public $writeDir;
 	public $pluginId;
 	public $currentBuildId;
-	protected $api;
 
-	public function __construct( int $pluginId, int $currentBuildId, string $writeDir) {
+	public function __construct( int $pluginId, int $buildId, string $writeDir) {
 		$this->pluginId = $pluginId;
-		$this->currentBuildId = $currentBuildId;
+		$this->buildId = $buildId;
 		$this->writeDir = $writeDir;
 	}
 

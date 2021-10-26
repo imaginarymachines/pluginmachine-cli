@@ -3,11 +3,12 @@
 namespace App\Commands;
 
 use App\Services\Features;
+use App\Services\PluginMachine;
 use App\Services\PluginMachineApi;
+use App\Services\PluginMachinePlugin;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class Add extends Command
@@ -31,7 +32,7 @@ class Add extends Command
      *
      * @return mixed
      */
-    public function handle(Features $features,PluginMachineApi $api)
+    public function handle(Features $features, PluginMachine  $machine)
     {
 
         $featureLabel = $this->choice(
@@ -59,7 +60,8 @@ class Add extends Command
 		}
 
 
-		dd($data);
+		$r = $machine->addFeature($feature->type,$data);
+		dd($r);
 
     }
 

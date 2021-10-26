@@ -12,10 +12,17 @@ class PluginMachine {
 	 * @var PluginMachineApi
 	 */
 	protected $api;
+	/**
+	 * @var PluginMachinePlugin
+	 */
 	protected $plugin;
 	public function __construct(PluginMachineApi $api, PluginMachinePlugin $plugin){
 		$this->api = $api;
 		$this->plugin = $plugin;
+	}
+
+	public function getApi(): PluginMachineApi {
+		return $this->api;
 	}
 
 	public function addFeature( string $feature, array $data ){
@@ -30,7 +37,8 @@ class PluginMachine {
 			return false;
 		}
 		foreach ($files as $path => $contents) {
-			Storage::put($path, $contents);
+			$writePath = sprintf('%s/$s', $this->plugin->writeDir, $path);
+			Storage::put($writePath, $contents);
 		}
 		return true;
 	}
