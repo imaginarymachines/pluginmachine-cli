@@ -7,12 +7,20 @@ use Illuminate\Support\ServiceProvider;
 class Features {
 
 	protected  $features;
-	protected $data;
+	protected $featuresData;
+	protected $rulesData;
 	public function __construct(){
-		$this->data = (array) json_decode(file_get_contents(__DIR__.'/data/features.json'));
-		$this->features = collect($this->data)->map(function($feature){
+		///api/v1/code?rulesOnly=1
+		$this->rulesData = (array) json_decode(file_get_contents(__DIR__.'/data/rules.json'));
+		///api/v1/code?withRules=0
+		$this->featuresData = (array) json_decode(file_get_contents(__DIR__.'/data/features.json'));
+		$this->features = collect($this->featuresData)->map(function($feature){
 			return $feature->feature;
 		})->toArray();
+	}
+
+	public function getRules(string $feature){
+		return $this->rulesData[$feature];
 	}
 	public function getFeatureOptions($as = 'flat',bool $withPluginHooks = false) :array {
 		$options = [];
@@ -39,11 +47,15 @@ class Features {
 	}
 
 	public function getFeatureBy(string $search, string $by,bool $withPluginHooks = false ) : \stdClass {
-		return collect($this->getFeatures($withPluginHooks))
-			->find(function($feature)use($by,$search){
+
+		$c = collect($this->getFeatures($withPluginHooks))
+			->filter(function($feature)use($by,$search){
 				return $feature->$by == $search;
 			});
-			throw new \Exception('Not found');
+			if($c->count()){
+				return $c->first();
+			}
+			throw new \Exception();
 	}
 
 
