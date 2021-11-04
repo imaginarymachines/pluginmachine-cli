@@ -10,7 +10,7 @@ class PluginMachinePlugin {
 
 	public $writeDir;
 	public $pluginId;
-	public $currentBuildId;
+	public $buildId;
 
 	public function __construct( int $pluginId, int $buildId, string $writeDir) {
 		$this->pluginId = $pluginId;
@@ -19,5 +19,12 @@ class PluginMachinePlugin {
 	}
 
 
+	public function buildId() {
+		return $this->buildId;
+	}
+
+	public function id(){
+		return $this->pluginId;
+	}
 
 }

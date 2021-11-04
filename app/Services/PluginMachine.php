@@ -26,10 +26,17 @@ class PluginMachine {
 	}
 
 	public function addFeature( string $feature, array $data ){
-		$featureId = $this->api->addFeature( $feature,$this->plugin->buildId, $data );
+		dd($this->plugin);
+		$featureId = $this->api
+			->addFeature(
+				$feature,
+				$this->plugin->id(),
+				$this->plugin->buildId(),
+				$data
+			);
 		$files = $this->api->getFeatureCode(
-			$this->plugin->buildId,
-			$this->plugin->buildId,
+			$this->plugin->id(),
+			$this->plugin->buildId(),
 			$featureId
 		);
 		if( ! $files ){
