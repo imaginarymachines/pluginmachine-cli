@@ -55,6 +55,6 @@ test('Add feature files', function(){
         $plugin->writePath('admin/name/App.js')
     );
     Storage::assertExists(
-        $plugin->writePath('admin/name/index.js')
+        $plugin->writePath('admin/name/App.js')
     );
 });

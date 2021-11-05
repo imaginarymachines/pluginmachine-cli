@@ -88,6 +88,7 @@ class PluginMachineApi {
 				'id' => $r->json('setting.id'),
 			];
 		}else{
+            dd($r->json());
 			throw new \Exception( $r->json('message') );
 		}
 

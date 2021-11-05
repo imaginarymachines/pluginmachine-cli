@@ -69,7 +69,7 @@ class PluginMachine {
             }
 
 		}
-		return true;
+		return $files;
 	}
 
 

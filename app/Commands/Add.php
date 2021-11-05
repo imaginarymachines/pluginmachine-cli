@@ -46,26 +46,38 @@ class Add extends Command
 		$rules = $features->getRules($feature->type);
 		$data = [];
 		foreach ($rules as $key => $field) {
-
 			$label = isset($field->label)&&! empty($field->label) ? $field->label : $key;
-			if( $key == $feature->type .'Type' ){
-				continue;
-			}
+
 			if( isset($field->options) ){
 				$options = (array)$field->options;
-				$data[$key] = $this->choice(
+				$value = $this->choice(
 					$label,
-					array_reverse($options),
+					array_values($options),
 					Arr::first($options)
 				);
+                switch($feature->type){
+                    case 'adminPage':
+                        $data[$key] = strtoupper($value);
+                    break;
+                    default:
+                        $data[$key] = strtolower($value);
+                    break;
+                }
 			}else{
 				$data[$key] = $this->ask($label);
 			}
 
 		}
 
-
 		$r = $machine->addFeature($feature->type,$data);
+        if( false == $r ){
+            $this->error('Failed to add feature');
+        }else{
+            foreach ($r as $file) {
+                $this->info('Added file: ' . $file);
+            }
+        }
+
 
     }
 
