@@ -41,13 +41,14 @@ class PluginMachineApi {
 		return $r->body();
 	}
 
-	public function getFeatureCode($pluginId, $buildId, $featureId){
+	public function getFeatureCode($pluginId, $buildId, $featureId, $file){
+		$url = $this->requestUrl(
+			"plugins/{$pluginId}/builds/{$buildId}/features/{$featureId}/code?file=" . urlencode($file)
+		);
 		///plugins
 		$r = $this->getClientWithToken()
-			->get(
-				$this->requestUrl( "plugins/{$pluginId}/builds/{$buildId}/features/{$featureId}/code" ));
-				return $r->json()->files;
-
+			->get( $url );
+		dd($r->body());
 	}
 
 	public function addFeature(string $featureType, $pluginId, $buildId, array $data){
@@ -56,11 +57,15 @@ class PluginMachineApi {
 		///plugins
 		$r = $this->getClientWithToken()
 			->post( $url,$data );
-		$data = ! empty($r->json()) ? $r->json() : json_decode($r->body());
 		if(201 === $r->status() ){
-			return $data['files'];
+			return [
+				'files' => $r->json('files'),
+				'id' => $r->json('setting.id'),
+			];
+		}else{
+			throw new \Exception( $r->json('message') );
 		}
-		dd($r->status(),$data);
+
 	}
 
 	public function addPlugin(array $data){

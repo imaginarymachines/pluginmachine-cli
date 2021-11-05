@@ -26,19 +26,16 @@ class PluginMachine {
 	}
 
 	public function addFeature( string $feature, array $data ){
-		dd($this->plugin);
-		$featureId = $this->api
-			->addFeature(
+		try {
+			$r = $this->api->addFeature(
 				$feature,
 				$this->plugin->id(),
 				$this->plugin->buildId(),
 				$data
 			);
-		$files = $this->api->getFeatureCode(
-			$this->plugin->id(),
-			$this->plugin->buildId(),
-			$featureId
-		);
+			$files = $r->json( 'files');
+			$id = $r->json( 'id');
+
 		if( ! $files ){
 			//?
 			return false;
@@ -49,6 +46,12 @@ class PluginMachine {
 		}
 		return true;
 	}
+		}catch( \Exception $e ){
+						return false;
+
+		}
+
+
 
 	protected function getClientWithToken():PendingRequest{
 		return Http::withToken($this->apiToken);
