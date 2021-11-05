@@ -52,6 +52,7 @@ class PluginMachineApi {
 		});
 	}
 
+
     /**
      * Get the code for a feature, by file path
      *
@@ -94,11 +95,26 @@ class PluginMachineApi {
 
 	}
 
+    /**
+     * Get pluginMachine.json for a plugin
+     *
+     * @param int $pluginId
+     */
+    public function getPluginJson(int $pluginId){
+        $url = $this->requestUrl( "plugins/{$pluginId}/code" );
+        $r = $this->getClientWithToken()
+            ->get( $url );
+        if(200 != $r->status()){
+            return false;
+        }
+        return $r->body();
+    }
+
     //@TODO
 	public function addPlugin(array $data){
 		///plugins
 		$r = $this->getClientWithToken()
-			->post( $this->requestUrl( "/plugins/"),$data );
+			->post( $this->requestUrl( "plugins/"),$data );
 		dd($r);
 	}
 

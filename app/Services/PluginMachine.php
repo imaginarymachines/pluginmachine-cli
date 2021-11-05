@@ -72,6 +72,21 @@ class PluginMachine {
 		return $files;
 	}
 
+    /**
+     * Get pluginMachine.json for a plugin
+     *
+     * @param int $pluginId
+     */
+    public function writePluginJson(int $pluginId){
+        $r = $this->api->getPluginJson(
+            $pluginId
+        );
+        if( false != $r && ! empty($r)){
+            Storage::put($this->plugin->writePath('pluginMachine.json'),$r);
+            return true;
+        }
+        return false;
+    }
 
 
 }

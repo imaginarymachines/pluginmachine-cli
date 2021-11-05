@@ -58,3 +58,12 @@ test('Add feature files', function(){
         $plugin->writePath('admin/name/App.js')
     );
 });
+test('Adds pluginMachine.json files', function(){
+    Storage::fake();
+    $pluginMachine = app( PluginMachine::class );
+
+    $this->assertTrue($pluginMachine->writePluginJson(
+        4
+    ));
+
+});
