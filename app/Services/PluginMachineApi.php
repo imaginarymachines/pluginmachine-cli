@@ -6,19 +6,39 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Arr;
+/**
+ * API client for Plugin Machine
+ */
 class PluginMachineApi {
 
+    /**
+     * The API token
+     *
+     * @var string
+     */
 	protected $apiToken;
+
+    /**
+     * The API URL
+     *
+     * @var string
+     */
 	protected $apiUrl;
-	public function __construct(string $apiUrl,string $apiToken ){
+	public function __construct(string $apiUrl,string $apiToken){
 		$this->apiToken = $apiToken;
 		$this->apiUrl = $apiUrl;
 	}
 
-	public function requestUrl(string $enpoint ): string{
+    /**
+     * Create a full URL for API requests.
+     */
+	public function requestUrl(string $enpoint): string{
 		return sprintf( '%s/api/v1/%s', $this->apiUrl, $enpoint );
 	}
 
+    /**
+     * Get all plugins we could use.
+     */
 	public function getPlugins(){
 		$r = $this->getClientWithToken()
 			->get(
@@ -32,28 +52,33 @@ class PluginMachineApi {
 		});
 	}
 
-
-
-	public function getBuildCode($pluginId, $buildId){
-		///plugins
-		$r = $this->getClientWithToken()
-			->post( $this->requestUrl( "plugins/{$pluginId}/builds/{$buildId}/code" ) );
-		return $r->body();
-	}
-
-	public function getFeatureCode($pluginId, $buildId, $featureId, $file){
+    /**
+     * Get the code for a feature, by file path
+     *
+     * @param int $featureId
+     * @param PluginMachinePlugin $plugin
+     * @param string $file
+     */
+	public function getFeatureCode($featureId,PluginMachinePlugin $plugin , $file){
 		$url = $this->requestUrl(
-			"plugins/{$pluginId}/builds/{$buildId}/features/{$featureId}/code?file=" . urlencode($file)
+			"plugins/{$plugin->pluginId}/builds/{$plugin->buildId}/features/{$featureId}/code?file=" . urlencode($file)
 		);
 		///plugins
 		$r = $this->getClientWithToken()
 			->get( $url );
-		dd($r->body());
+		return $r->body();
 	}
 
-	public function addFeature(string $featureType, $pluginId, $buildId, array $data){
+     /**
+     * Add a feature
+     *
+     * @param string $featureType
+     * @param PluginMachinePlugin $plugin
+     * @param array $data
+     */
+	public function addFeature(string $featureType, PluginMachinePlugin $plugin, array $data){
 		$data['featureType'] = $featureType;
-		$url = $this->requestUrl( "plugins/{$pluginId}/builds/{$buildId}/features" );
+		$url = $this->requestUrl( "plugins/{$plugin->pluginId}/builds/{$plugin->buildId}/features" );
 		///plugins
 		$r = $this->getClientWithToken()
 			->post( $url,$data );
@@ -68,6 +93,7 @@ class PluginMachineApi {
 
 	}
 
+    //@TODO
 	public function addPlugin(array $data){
 		///plugins
 		$r = $this->getClientWithToken()
@@ -75,6 +101,9 @@ class PluginMachineApi {
 		dd($r);
 	}
 
+	 /**
+     * Get the API client
+     */
 	protected function getClientWithToken():PendingRequest{
 		return Http::withToken($this->apiToken);
 	}

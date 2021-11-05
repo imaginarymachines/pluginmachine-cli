@@ -27,4 +27,7 @@ class PluginMachinePlugin {
 		return $this->pluginId;
 	}
 
+    public function writePath($path):string{
+        return sprintf('%s/%s', $this->writeDir, $path);
+    }
 }

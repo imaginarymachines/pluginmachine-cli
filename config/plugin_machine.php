@@ -10,7 +10,7 @@ return [
 	'plugin' => [
 		'pluginId' => (int)$data->pluginId,
 		'buildId' => (int)$data->buildId,
-		'writeDir' => __DIR__
+		'writeDir' =>'testwrite',
 
 	]
 ];

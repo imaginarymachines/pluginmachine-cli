@@ -35,13 +35,13 @@ class Add extends Command
     public function handle(Features $features, PluginMachine  $machine)
     {
 
-		/**
+
         $featureLabel = $this->choice(
 			'What do you want to add to this plugin?',
 			$features->getFeatureOptions('flat.label'),
 			3
-		); */
-		$featureLabel = "Admin Menu Page";
+		);
+		//$featureLabel = "Admin Menu Page";
 		$feature = $features->getFeatureBy($featureLabel,'singular');
 		$rules = $features->getRules($feature->type);
 		$data = [];
