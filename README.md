@@ -14,6 +14,6 @@
 - List Plugins
     - `php plugin-machine plugins:all`
 - Write pluginMachine.json for a plugin
-    - `php plugin-machine plugins:config {pluginId}`
+    - `php plugin-machine plugin:config {pluginId}`
 - Add a feature to current plugin
     - `php plugin-machine add`

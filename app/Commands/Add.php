@@ -69,26 +69,18 @@ class Add extends Command
 
 		}
 
-		$r = $machine->addFeature($feature->type,$data);
-        if( false == $r ){
-            $this->error('Failed to add feature');
-        }else{
+        try {
+            $r = $machine->addFeature($feature->type,$data);
             foreach ($r as $file) {
                 $this->info('Added file: ' . $file);
             }
+        } catch (\Throwable $th) {
+            $this->error($th->getMessage());
         }
 
 
+
     }
 
-    /**
-     * Define the command's schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
-     * @return void
-     */
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
-    }
+
 }

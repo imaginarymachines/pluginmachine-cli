@@ -89,8 +89,7 @@ class PluginMachineApi {
 				'id' => $r->json('setting.id'),
 			];
 		}else{
-            dd($r->json());
-			throw new \Exception( $r->json('message') );
+            $this->throwBasedOnStatus($r->status());
 		}
 
 	}
@@ -104,10 +103,21 @@ class PluginMachineApi {
         $url = $this->requestUrl( "plugins/{$pluginId}/code" );
         $r = $this->getClientWithToken()
             ->get( $url );
-        if(200 != $r->status()){
-            return false;
+        if( 200 != $r->status()){
+            $this->throwBasedOnStatus($r->status());
         }
         return $r->body();
+    }
+
+    protected function throwBasedOnStatus( $status ){
+        if( 403 == $status ){
+            throw new \Exception( 'Not authorized to access plugin' );
+        }
+        if( 404 == $status ){
+            throw new \Exception( 'Plugin not found' );
+        }
+        throw new \Exception( $status );
+
     }
 
     //@TODO

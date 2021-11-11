@@ -5,7 +5,7 @@ namespace App\Commands;
 use App\Services\PluginMachineApi;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
-
+use Illuminate\Support\Facades\Storage;
 class GetPluginMachineJson extends Command
 {
 
@@ -16,6 +16,14 @@ class GetPluginMachineJson extends Command
     public function handle(PluginMachineApi $api)
     {
         $pluginId = $this->argument('pluginId');
+        try {
+            $json = $api->getPluginJson($pluginId);
+            Storage::put( 'pluginMachine.json', $json);
+        } catch (\Throwable $th) {
+            $this->error($th->getMessage());
+        }
+
+
     }
 
 
