@@ -44,6 +44,7 @@ class PluginMachine {
             $this->plugin,
             $data
         );
+
         $files = $r['files'];
         $id = $r['id'];
 

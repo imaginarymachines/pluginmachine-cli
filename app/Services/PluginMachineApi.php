@@ -67,7 +67,10 @@ class PluginMachineApi {
 		///plugins
 		$r = $this->getClientWithToken()
 			->get( $url );
-		return $r->body();
+        if( 200 == $r->status() ){
+		    return $r->body();
+        }
+        $this->throwBasedOnStatus($r->status());
 	}
 
      /**
@@ -109,6 +112,32 @@ class PluginMachineApi {
         return $r->body();
     }
 
+    /**
+     * Get the rule sets for all features
+     */
+    public function getRules(){
+        $url = $this->requestUrl( "code?rulesOnly=1" );
+        $r = $this->getClientWithToken()
+            ->get( $url );
+        if( 200 != $r->status()){
+            $this->throwBasedOnStatus($r->status());
+        }
+        return $r->json();
+    }
+
+    /**
+     * Get the feature defininitions
+     */
+    public function getFeatures(){
+        $url = $this->requestUrl( "code?withRules=0" );
+        $r = $this->getClientWithToken()
+            ->get( $url );
+        if( 200 != $r->status()){
+            $this->throwBasedOnStatus($r->status());
+        }
+        return $r->json();
+    }
+
     protected function throwBasedOnStatus( $status ){
         if( 403 == $status ){
             throw new \Exception( 'Not authorized to access plugin' );
@@ -120,13 +149,7 @@ class PluginMachineApi {
 
     }
 
-    //@TODO
-	public function addPlugin(array $data){
-		///plugins
-		$r = $this->getClientWithToken()
-			->post( $this->requestUrl( "plugins/"),$data );
-		dd($r);
-	}
+
 
 	 /**
      * Get the API client
