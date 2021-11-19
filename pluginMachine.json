@@ -1,4 +1,21 @@
 {
-    "pluginId": 6,
-    "buildId": 6
+    "slug": "build-with-two-admin-pages",
+    "pluginId": 1,
+    "buildId": 1,
+    "entryPoints": {
+        "adminPages": [
+            "build-with-two-admin-pages-0",
+            "build-with-two-admin-pages-1"
+        ],
+        "blocks": []
+    },
+    "buildIncludes": [
+        "build-with-two-admin-pages.php",
+        "readme.txt",
+        "php",
+        "vendor",
+        "build",
+        "admin/build-with-two-admin-pages-0/init.php",
+        "admin/build-with-two-admin-pages-1/init.php"
+    ]
 }

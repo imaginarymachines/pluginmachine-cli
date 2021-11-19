@@ -11,11 +11,21 @@ class PluginMachinePlugin {
 	public $writeDir;
 	public $pluginId;
 	public $buildId;
+    public array $buildIncludes;
+    public string $slug;
+	public function __construct(
+        int $pluginId,
+        int $buildId,
+        string $writeDir,
+        array $buildIncludes = [],
+        string $slug
 
-	public function __construct( int $pluginId, int $buildId, string $writeDir) {
+    ) {
 		$this->pluginId = $pluginId;
 		$this->buildId = $buildId;
 		$this->writeDir = $writeDir;
+        $this->buildIncludes = $buildIncludes;
+        $this->slug = $slug;
 	}
 
 

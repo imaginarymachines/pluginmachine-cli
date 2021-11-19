@@ -24,16 +24,21 @@ class AppServiceProvider extends ServiceProvider
 
 		});
 		$this->app->singleton(PluginMachinePlugin::class, function (){
+            $data = file_get_contents(dirname(__DIR__,1) . '/pluginMachine.json');
+            $data = json_decode($data,fakse);
 			return new PluginMachinePlugin(
-				config('plugin_machine.plugin.pluginId'),
-				config('plugin_machine.plugin.buildId'),
+				$data->pluginId,
+				$data->buildId,
 				config('plugin_machine.plugin.writeDir'),
+                $data->buildIncludes,
+                $data->slug,
+
 			);
 
 		});
 		$this->app->singleton(PluginMachine::class, function(){
 			return new PluginMachine(
-				app(PluginMachineApi::class),
+				app( PluginMachineApi::class),
 				app( PluginMachinePlugin::class)
 			);
 		});
